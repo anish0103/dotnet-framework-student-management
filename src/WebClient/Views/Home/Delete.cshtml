@@ -1,0 +1,36 @@
+﻿@model WebModel.StudentModel.Student
+
+@{
+    ViewBag.Title = "Delete Page";
+}
+
+<div class="w-100 d-flex my-2 align-items-center">
+    <h3 class="flex-grow-1">Delete Student</h3>
+    <div class="my-2">
+        <a href="/" class="btn btn-primary">Back to list</a>
+    </div>
+</div>
+
+<form method="post">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group my-2">
+        @Html.LabelFor(model => model.name)
+        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control w-50 mt-1" } })
+        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group my-2">
+        @Html.LabelFor(model => model.department)
+        @Html.EditorFor(model => model.department, new { htmlAttributes = new { @class = "form-control mt-1  w-50" } })
+        @Html.ValidationMessageFor(model => model.department, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group my-2">
+        @Html.LabelFor(model => model.phoneno)
+        @Html.EditorFor(model => model.phoneno, new { htmlAttributes = new { @class = "form-control mt-1  w-50" } })
+        @Html.ValidationMessageFor(model => model.phoneno, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-danger mt-2">Delete</button>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

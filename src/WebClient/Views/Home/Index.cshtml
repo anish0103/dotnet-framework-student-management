@@ -1,0 +1,44 @@
+﻿@model List<WebModel.StudentModel.Student>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@{
+    string Value = System.Configuration.ConfigurationManager.AppSettings["TestingValue"];
+}
+
+<div class="w-100 d-flex my-2 align-items-center">
+    <h3 class="flex-grow-1">Students List</h3>
+    <div class="my-2">
+        <a href="/home/create" class="btn btn-primary">Create</a>
+    </div>
+</div>
+
+
+<table class="table table-striped text-center table-bordered">
+    <thead class="text-center">
+        <tr>
+            <th class="text-center" scope="col">Name</th>
+            <th class="text-center" scope="col">Department</th>
+            <th class="text-center" scope="col">Phone Number</th>
+            <th class="text-center" scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.name</td>
+                    <td>@student.department</td>
+                    <td>@student.phoneno</td>
+                    <td class="d-flex justify-content-center">
+                        <a href="/home/edit/@student.id" class="nav-item mx-3 text-decoration-none">Edit</a>
+                        <a href="/home/delete/@student.id" class="nav-item mx-3 text-decoration-none">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
