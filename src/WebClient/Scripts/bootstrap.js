@@ -2578,3 +2578,9 @@ if (typeof jQuery === 'undefined') {
   })
 
 }(jQuery);
+
+document.querySelector(".navbar-toggler").addEventListener("click",
+    function (e) {
+        document.querySelector("#navbarColor01").classList.toggle("show");
+    }
+); 

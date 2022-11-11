@@ -5,7 +5,10 @@ using System.Net.Http;
 using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
+using WebClient.Wrapper;
 using WebModel.StudentModel;
+
+//ReadAsAsync, PostAsJsonAsync, DeleteAsync and PutAsJsonAsync is available in Microsoft.AspNet.WebApi.Client
 
 namespace WebClient.Controllers
 {
@@ -15,43 +18,19 @@ namespace WebClient.Controllers
 
         public ActionResult Index()
         {
-            client.BaseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["backendString"] + "/api/Students");
-            var response = client.GetAsync("Students");
-            response.Wait();
-
-            var responseData = response.Result;
-            if (responseData.IsSuccessStatusCode)
+            using (ConsumeAPI<Student> consumeAPI = new ConsumeAPI<Student>())
             {
-                var data = responseData.Content.ReadAsAsync<List<Student>>();
-                data.Wait();
-
-                var processedData = data.Result;
-                return View(processedData);
-            }
-            else
-            {
-                return View();
+                IEnumerable<Student> students = consumeAPI.generaticReadAsAsyncs("Students");
+                return View(students);
             }
         }
 
         public ActionResult Edit(int id)
         {
-            client.BaseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["backendString"] + "/api/Students");
-            var response = client.GetAsync("Students/"+id);
-            response.Wait();
-
-            var responseData = response.Result;
-            if (responseData.IsSuccessStatusCode)
+            using (ConsumeAPI<Student> consumeAPI = new ConsumeAPI<Student>())
             {
-                var data = responseData.Content.ReadAsAsync<Student>();
-                data.Wait();
-
-                var processedData = data.Result;
-                return View(processedData);
-            }
-            else
-            {
-                return View();
+                Student student = consumeAPI.generaticReadAsAsync("Students/" + id);
+                return View(student);
             }
         }
 
@@ -59,18 +38,11 @@ namespace WebClient.Controllers
         public ActionResult Edit(Student studentData, int id)
         {
             studentData.id = id;
-            client.BaseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["backendString"] + "/api/Students");
-            var response = client.PutAsJsonAsync("Students", studentData);
-            response.Wait();
-
-            var responseData = response.Result;
-            if (responseData.IsSuccessStatusCode)
+            using (ConsumeAPI<Student> consumeAPI = new ConsumeAPI<Student>())
             {
+                Student student = consumeAPI.generaticPutAsJsonAsync("Students", studentData);
                 return RedirectToAction("Index");
-
             }
-            return View();
-
         }
 
         public ActionResult Create()
@@ -81,55 +53,31 @@ namespace WebClient.Controllers
         [HttpPost]
         public ActionResult Create(Student studentData)
         {
-            client.BaseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["backendString"] + "/api/Students");
-            var response = client.PostAsJsonAsync("Students", studentData);
-            response.Wait();
-
-            var responseData = response.Result;
-            if (responseData.IsSuccessStatusCode)
+            using (ConsumeAPI<Student> consumeAPI = new ConsumeAPI<Student>())
             {
+                Student student = consumeAPI.generaticPostAsJsonAsync("Students", studentData);
                 return RedirectToAction("Index");
-
             }
-            return View();
+
         }
 
         public ActionResult Delete(int id)
         {
-            client.BaseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["backendString"] + "/api/Students");
-            var response = client.GetAsync("Students/" + id);
-            response.Wait();
-
-            var responseData = response.Result;
-            if (responseData.IsSuccessStatusCode)
+            using (ConsumeAPI<Student> consumeAPI = new ConsumeAPI<Student>())
             {
-                var data = responseData.Content.ReadAsAsync<Student>();
-                data.Wait();
-
-                var processedData = data.Result;
-                return View(processedData);
-            }
-            else
-            {
-                return View();
+                Student student = consumeAPI.generaticReadAsAsync("Students/" + id);
+                return View(student);
             }
         }
 
         [HttpPost]
         public ActionResult Delete(Student studentData, int id)
         {
-            client.BaseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["backendString"] + "/api/Students");
-            var response = client.DeleteAsync("Students/" +id);
-            response.Wait();
-
-            var responseData = response.Result;
-            if (responseData.IsSuccessStatusCode)
+            using (ConsumeAPI<Student> consumeAPI = new ConsumeAPI<Student>())
             {
+                Student student = consumeAPI.generaticDeleteAsync("Students/" + id);
                 return RedirectToAction("Index");
-
             }
-            return View();
-
         }
 
         public ActionResult About()
